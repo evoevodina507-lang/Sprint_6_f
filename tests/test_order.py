@@ -1,6 +1,6 @@
 import pytest
-from selenium.webdriver.support.ui import WebDriverWait
 
+from data import Urls, OrderData
 from pages.main_page import MainPage
 from pages.order_page import OrderPage
 
@@ -8,52 +8,16 @@ from pages.order_page import OrderPage
 class TestOrder:
 
     @pytest.mark.parametrize(
-        "order_button, user_data",
-        [
-            (
-                "top",
-                {
-                    "name": "Иван",
-                    "surname": "Иванов",
-                    "address": "Москва, улица Ленина, 1",
-                    "metro": "Черкизовская",
-                    "phone": "89991234567",
-                    "date": "30.10.2026",
-                    "rental_period": "сутки",
-                    "color": "black",
-                    "comment": "Позвонить за час"
-                }
-            ),
-            (
-                "bottom",
-                {
-                    "name": "Анна",
-                    "surname": "Петрова",
-                    "address": "Москва, улица Пушкина, 10",
-                    "metro": "Сокольники",
-                    "phone": "89997654321",
-                    "date": "31.10.2026",
-                    "rental_period": "двое суток",
-                    "color": "grey",
-                    "comment": "Оставить у двери"
-                }
-            )
-        ]
+        "user_data",
+        [OrderData.DATA_SET_1, OrderData.DATA_SET_2]
     )
-    def test_order_success(
-        self,
-        driver,
-        order_button,
-        user_data
-    ):
+    def test_order_success(self, driver, user_data):
         main_page = MainPage(driver)
         order_page = OrderPage(driver)
 
         main_page.open()
-
-        main_page.click_order_button(
-            order_button
-        )
+        main_page.accept_cookies()
+        main_page.click_order_button(user_data["order_button"])
 
         order_page.fill_first_form(
             user_data["name"],
@@ -78,24 +42,23 @@ class TestOrder:
         main_page = MainPage(driver)
 
         main_page.open()
+        main_page.accept_cookies()
         main_page.click_scooter_logo()
 
-        assert driver.current_url == MainPage.URL
+        assert main_page.get_current_url() == Urls.MAIN_PAGE_URL
 
     def test_yandex_logo_opens_dzen(self, driver):
         main_page = MainPage(driver)
 
         main_page.open()
+        main_page.accept_cookies()
 
-        original_window = driver.current_window_handle
+        original_window = main_page.get_current_window_handle()
 
         main_page.click_yandex_logo()
-
         main_page.switch_to_next_window()
 
-        WebDriverWait(driver, 15).until(
-            lambda d: "dzen.ru" in d.current_url
-        )
+        main_page.wait_for_url_contains("dzen.ru")
 
-        assert driver.current_window_handle != original_window
-        assert "dzen.ru" in driver.current_url
+        assert main_page.get_current_window_handle() != original_window
+        assert "dzen.ru" in main_page.get_current_url()

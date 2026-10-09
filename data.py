@@ -19,21 +19,27 @@ class FAQData:
 
 class OrderData:
     DATA_SET_1 = {
+        "order_button": "top",
         "name": "Иван",
-        "last_name": "Иванов",
-        "address": "Москва, ул. Ленина, д. 1",
+        "surname": "Иванов",
+        "address": "Москва, улица Ленина, 1",
         "metro": "Черкизовская",
-        "phone": "+79991112233",
-        "date": "10.10.2026",
+        "phone": "89991234567",
+        "date": "30.10.2026",
+        "rental_period": "сутки",
+        "color": "black",
         "comment": "Позвонить за час"
     }
 
     DATA_SET_2 = {
-        "name": "Петр",
-        "last_name": "Петров",
-        "address": "Москва, ул. Мира, д. 10",
+        "order_button": "bottom",
+        "name": "Анна",
+        "surname": "Петрова",
+        "address": "Москва, улица Пушкина, 10",
         "metro": "Сокольники",
-        "phone": "+79992223344",
-        "date": "15.10.2026",
+        "phone": "89997654321",
+        "date": "31.10.2026",
+        "rental_period": "двое суток",
+        "color": "grey",
         "comment": "Оставить у двери"
     }

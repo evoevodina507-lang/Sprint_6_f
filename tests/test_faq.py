@@ -1,5 +1,6 @@
 import pytest
 
+from data import FAQData
 from pages.main_page import MainPage
 
 
@@ -15,10 +16,10 @@ class TestFAQ:
         question_index
     ):
         main_page = MainPage(driver)
-
         main_page.open()
-        main_page.click_faq_question(question_index)
+        main_page.accept_cookies()
 
+        main_page.click_faq_question(question_index)
         answer = main_page.get_faq_answer(question_index)
 
-        assert answer != ""
+        assert answer == FAQData.FAQ_ANSWERS[question_index]
